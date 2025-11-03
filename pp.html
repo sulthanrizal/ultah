@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🎉 Untuk Kamu 🎉</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Georgia", serif;
+        background: linear-gradient(135deg, #667eea 0%, #f80dc1 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 30px;
+        padding: 50px;
+        max-width: 600px;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 10;
+        animation: fadeIn 1s ease-in;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      h1 {
+        color: #764ba2;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+      }
+
+      .input-field {
+        width: 100%;
+        padding: 15px 20px;
+        font-size: 1.2em;
+        border: 3px solid #764ba2;
+        border-radius: 50px;
+        outline: none;
+        text-align: center;
+        font-family: "Georgia", serif;
+        transition: all 0.3s;
+        margin-top: 20px;
+      }
+
+      .input-field:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+      }
+
+      .button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px 40px;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.2em;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: transform 0.3s, opacity 0.3s;
+      }
+
+      .button:hover {
+        transform: scale(1.1);
+      }
+
+      .message {
+        font-size: 1.3em;
+        color: #555;
+        line-height: 1.8;
+        margin: 30px 0;
+        font-style: italic;
+        min-height: 300px;
+      }
+
+      .highlight {
+        color: #764ba2;
+        font-weight: bold;
+      }
+
+      .page {
+        display: none;
+      }
+
+      .page.active {
+        display: block;
+      }
+
+      /* Halaman kejutan (fullscreen) */
+      #surprisePage {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: black;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        overflow: hidden;
+        z-index: 11;
+      }
+
+      #celebration {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .big-photo {
+        width: 90%;
+        max-width: 400px;
+        border-radius: 20px;
+        box-shadow: 0 0 40px rgba(255, 255, 255, 0.6);
+        animation: fadeInPhoto 2s ease forwards;
+      }
+      .con-img {
+        position: relative;
+      }
+
+      @keyframes fadeInPhoto {
+        from {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      /* Efek hati beterbangan */
+      .heart {
+        position: fixed;
+        bottom: 0;
+        font-size: 30px;
+        animation: float 6s linear forwards;
+        opacity: 0.7;
+        z-index: 12;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-110vh) scale(0.8);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="mainContainer">
+      <!-- Halaman Input Nama -->
+      <div id="welcomePage" class="page active">
+        <h1>🎂 Ada Kejutan Spesial!</h1>
+        <p style="color: #666; font-size: 1.1em; margin-bottom: 20px">
+          Halo! Aku Sulthan Rizal Halfa Ilmi, ada sesuatu yang istimewa buat
+          kamu 💕
+        </p>
+        <input
+          type="text"
+          id="nameInput"
+          class="input-field"
+          placeholder="Siapa nama kamu?"
+          onkeypress="if(event.key === 'Enter') startExperience()"
+        />
+        <button class="button" onclick="startExperience()">Masuk 💖</button>
+      </div>
+
+      <!-- Halaman Pesan -->
+      <div id="mainPage" class="page">
+        <h1 id="birthdayTitle">❤️ Untuk Kamu ❤️</h1>
+        <div class="message" id="messageBox"></div>
+        <button
+          class="button"
+          id="revealBtn"
+          style="display: none"
+          onclick="showSurprise()"
+        >
+          Lihat Kejutan 🎁
+        </button>
+      </div>
+    </div>
+
+    <!-- Halaman Kejutan -->
+    <div id="surprisePage">
+      <canvas id="celebration"></canvas>
+      <div style="text-align: center">
+        <h1 style="color: white; font-size: 2.5em; margin-bottom: 20px">
+          🎉 Surprise! 🎉
+        </h1>
+        <h1 style="color: white; font-size: 2.5em; margin-bottom: 20px">
+          Happy Birthday! 🎂
+        </h1>
+      </div>
+      <div class="con-img">
+        <img class="big-photo" src="./foto.jpeg" alt="Foto dia" />
+      </div>
+    </div>
+
+    <audio id="bgMusic" loop>
+      <source src="./lagu.mp3" type="audio/mp3" />
+    </audio>
+
+    <script>
+      let userName = "";
+      let musicStarted = false;
+
+      function startExperience() {
+        const nameInput = document.getElementById("nameInput");
+        userName = nameInput.value.trim();
+
+        if (userName === "") {
+          alert("Isi nama kamu dulu dong 💕");
+          return;
+        }
+
+        document.getElementById("welcomePage").classList.remove("active");
+        document.getElementById("mainPage").classList.add("active");
+
+        document.getElementById(
+          "birthdayTitle"
+        ).innerHTML = `✨ Untuk ${userName} ✨`;
+
+        const messageBox = document.getElementById("messageBox");
+        const messages = [
+          `Untuk <span class="highlight">${userName}</span> yang akhir-akhir ini bikin hari-hariku terasa lebih seru...`,
+          `Aku cuma mau bilang, semoga <span class="highlight">banyak hal baik</span> datang buat kamu.`,
+          `Terima kasih udah jadi sosok yang nyenengin dan selalu punya aura positif setiap kali kita ngobrol.`,
+          `<span class="highlight">Semoga semua hal yang kamu harapkan pelan-pelan tercapai, ya!</span>`,
+          `Tetap jadi kamu yang aku kenal sekarang — versi terbaikmu. 😊`,
+        ];
+
+        let index = 0;
+        function showNextMessage() {
+          if (index < messages.length) {
+            const p = document.createElement("p");
+            p.innerHTML = messages[index];
+            p.style.opacity = 0;
+            messageBox.appendChild(p);
+
+            setTimeout(() => {
+              p.style.transition = "opacity 1s";
+              p.style.opacity = 1;
+            }, 100);
+
+            index++;
+            setTimeout(showNextMessage, 2500);
+          } else {
+            setTimeout(() => {
+              const btn = document.getElementById("revealBtn");
+              btn.style.display = "inline-block";
+              btn.style.opacity = 0;
+              setTimeout(() => {
+                btn.style.transition = "opacity 1s";
+                btn.style.opacity = 1;
+              }, 200);
+            }, 2000);
+          }
+        }
+        showNextMessage();
+      }
+
+      // 🎁 Halaman kejutan
+      function showSurprise() {
+        document.getElementById("mainPage").style.display = "none";
+        document.getElementById("surprisePage").style.display = "flex";
+
+        const music = document.getElementById("bgMusic");
+        if (!musicStarted) {
+          music.play().catch(() => console.log("Autoplay blocked"));
+          musicStarted = true;
+        }
+
+        startConfetti();
+        startHearts();
+      }
+
+      // 💕 Efek hati beterbangan
+      function createHeart() {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "💕";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = Math.random() * 20 + 20 + "px";
+        heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+        heart.style.color = "#ff7eb9";
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 7000);
+      }
+
+      function startHearts() {
+        setInterval(createHeart, 300);
+      }
+
+      // 🎉 Confetti
+      const canvas = document.getElementById("celebration");
+      const ctx = canvas.getContext("2d");
+      let confetti = [];
+
+      function startConfetti() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        confetti = [];
+
+        for (let i = 0; i < 150; i++) {
+          confetti.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            r: Math.random() * 6 + 4,
+            d: Math.random() * 10 + 10,
+            color: `hsl(${Math.random() * 360}, 100%, 70%)`,
+            tilt: Math.random() * 10 - 10,
+          });
+        }
+
+        requestAnimationFrame(drawConfetti);
+      }
+
+      function drawConfetti() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        confetti.forEach((p) => {
+          ctx.beginPath();
+          ctx.fillStyle = p.color;
+          ctx.fillRect(p.x, p.y, p.r, p.r);
+          ctx.fill();
+          p.y += Math.cos(p.d) + 2;
+          p.x += Math.sin(p.d);
+          if (p.y > canvas.height) p.y = -10;
+        });
+        requestAnimationFrame(drawConfetti);
+      }
+
+      window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      });
+    </script>
+  </body>
+</html>
